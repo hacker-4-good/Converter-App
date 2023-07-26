@@ -25,7 +25,7 @@ def find_current_weather(city):
     return general, temperature, max_temperature, feels_temp, humidity, icon
 
 def main():
-    st.header("Find the Weather")
+    st.header("Find the Weather 🌥️")
     city = st.text_input("Enter the city").lower()
     if st.button('Find'):
         general, temperature, max_temperature, feels_temp, humidity, icon = find_current_weather(city)
