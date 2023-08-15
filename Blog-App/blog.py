@@ -2,6 +2,10 @@ import streamlit as st
 import replicate 
 import os 
 import requests
+from pexels_api import API 
+
+
+
 
 st.set_page_config(
     page_title="Blog App",
@@ -15,6 +19,7 @@ st.set_page_config(
 
 
 st.sidebar.title("Everything Is Present Here 😎")
+
 
 if st.sidebar.button("About Me"):
     st.title("Hello 👋, I'm Mayank Goswami")
@@ -34,7 +39,110 @@ if st.sidebar.button("About Me"):
     st.markdown("[![Gmail](https://img.shields.io/badge/gmail-%23EE0000.svg?&style=for-the-badge&logo=gmail&logoColor=white)](mailto:mayankgoswami247@gmail.com)")
 
 
-service = st.sidebar.selectbox(label="Select the service", options=['Click it!','LLama 2 Chatbot', 'Text2Image'])
+
+
+service = st.sidebar.selectbox(label="Select the service you want to use :)", options=['Click it!','LLama 2 Chatbot', 'Text2Image', 'Conversion Calculator', 'Weather', 'Image Search'])
+
+
+
+
+if service=='Image Search':
+    API_KEY = 't0Q0bzvEnqf60qO6FutoyISPobJtmtI5dlq20l4ovHlD8RshtsoKEZT4'
+    api = API(PEXELS_API_KEY=API_KEY)
+    st.title('Search your Image 🔎')
+    search = st.text_input('Enter the text', placeholder='Search your image')
+    if st.button('Search'):
+        api.search(search, page=1, results_per_page=5)
+        photos = api.get_entries()
+        for photo in photos:
+            st.image(photo.original)
+
+
+
+
+if service=='Weather':
+    API_KEY = 'd03df81fa6320b1f7fbb33c667d4e3c6'
+
+
+    def convert_to_celcius(temperature_in_kelvin):
+        return temperature_in_kelvin-273.15
+
+    def find_current_weather(city):
+        base_url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}'
+        weather_data = requests.get(base_url).json()
+        try:
+            general = weather_data['weather'][0]['main']
+            icon_id = weather_data['weather'][0]['icon']
+            temperature = round(convert_to_celcius(weather_data['main']['temp']))
+            max_temperature = round(convert_to_celcius(weather_data['main']['temp_max']))
+            feels_temp = round(convert_to_celcius(weather_data['main']['feels_like']))
+            humidity = weather_data['main']['humidity']
+            icon = f'https://openweathermap.org/img/wn/{icon_id}@2x.png'
+        except KeyError:
+            st.error('City Not Found')
+            st.stop()
+        return general, temperature, max_temperature, feels_temp, humidity, icon
+
+    def main():
+        st.header("Find the Weather 🌥️")
+        city = st.text_input("Enter the city").lower()
+        if st.button('Find'):
+            general, temperature, max_temperature, feels_temp, humidity, icon = find_current_weather(city)
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric('Temperature', str(temperature)+'℃', str(max_temperature-temperature)+'℃')
+                st.metric('Feels Like', str(feels_temp)+'℃')
+            with col2:
+                st.metric('Humidity', str(humidity)+'%')
+            with col3:
+                st.write(general)
+                st.image(icon)
+
+    if __name__=='__main__':
+        main()
+
+
+
+
+if service=='Conversion Calculator':
+    st.title('SGPA, CGPA and Percentage Converter')
+
+    st.subheader('SGPA to CGPA and Percentage')
+
+    option = st.selectbox('Select the option', options=['','Percentage', 'SGPA', 'CGPA'])
+
+    if option=='Percentage':
+        marks_obtain = st.number_input('Enter the marks')
+        total_marks = st.number_input('Enter total marks')
+        if st.button('Submit'):
+            percentage = (marks_obtain/total_marks)*100
+            st.text(f'Percentage: {percentage}')
+
+    if option=='SGPA':
+        percentage = st.number_input('Enter the percentage')
+        if st.button('Submit'):
+            sgpa = (percentage/10)+0.75
+            st.text(f'SGPA: {sgpa}')
+
+    if option=='CGPA':
+        try:
+            sgpas = []
+            sems = st.number_input('Number of semester')
+            check = True
+            j = 0
+            for i in range(int(sems)):
+                check = False
+                a = st.number_input(f'SGPA of Semester {i+1}')
+                sgpas.append(a)
+            if st.button('Submit'):
+                check = True
+            if check:
+                st.text(f'CGPA of all {sems} semester: {sum(sgpas)/sems}')
+        except:
+            pass
+
+
+
 
 if service=='Text2Image':
     with st.sidebar:
@@ -55,7 +163,6 @@ if service=='Text2Image':
         st.image(frame)
         for image in frame:
             response = requests.get(image)
-            print(type(response.content))
             if response.status_code == 200:
                 image_data = response.content
                 btn = st.download_button(
@@ -64,6 +171,9 @@ if service=='Text2Image':
                     st.toast("Download complete! Go show it off now!", icon="🥂")
             else:
                 st.error(f"Failed to fetch image from {frame}. Error code: {response.status_code}", icon="🚨")
+
+
+
 
 if service=='LLama 2 Chatbot':
     with st.sidebar:
