@@ -1,6 +1,7 @@
 import streamlit as st
 import replicate 
 import os 
+import requests
 
 st.set_page_config(
     page_title="Blog App",
@@ -33,7 +34,36 @@ if st.sidebar.button("About Me"):
     st.markdown("[![Gmail](https://img.shields.io/badge/gmail-%23EE0000.svg?&style=for-the-badge&logo=gmail&logoColor=white)](mailto:mayankgoswami247@gmail.com)")
 
 
-service = st.sidebar.selectbox(label="Select the service", options=['Click it!','LLama 2 Chatbot'])
+service = st.sidebar.selectbox(label="Select the service", options=['Click it!','LLama 2 Chatbot', 'Text2Image'])
+
+if service=='Text2Image':
+    with st.sidebar:
+        st.title('Text2Image 💬🖼️')
+        replicate_api = st.text_input('Enter Replicate API token:', type='password')
+        if not (replicate_api.startswith('r8_') and len(replicate_api)==40):
+            st.warning('Please enter your credentials!', icon='⚠️')
+        else:
+            st.success('Proceed to entering your prompt message!', icon='👉')
+        st.markdown("You can make your API Token key from here → [Link](https://replicate.com/)")
+    os.environ['REPLICATE_API_TOKEN'] = replicate_api
+    text=st.text_area('', placeholder='Type something', height=150)
+    if st.button("Generate"):
+        frame = replicate.run(
+        "stability-ai/sdxl:a00d0b7dcbb9c3fbb34ba87d2d5b46c56969c84a628bf778a7fdaec30b1b99c5",
+        input={"prompt": text}
+        )
+        st.image(frame)
+        for image in frame:
+            response = requests.get(image)
+            print(type(response.content))
+            if response.status_code == 200:
+                image_data = response.content
+                btn = st.download_button(
+                        ":red[**Download**]", data=image_data, file_name="output_file.png", mime="image/png", use_container_width=True)
+                if btn:
+                    st.toast("Download complete! Go show it off now!", icon="🥂")
+            else:
+                st.error(f"Failed to fetch image from {frame}. Error code: {response.status_code}", icon="🚨")
 
 if service=='LLama 2 Chatbot':
     with st.sidebar:
@@ -49,7 +79,6 @@ if service=='LLama 2 Chatbot':
     if "messages" not in st.session_state.keys():
         st.session_state.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
 
-    # Display or clear chat messages
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.write(message["content"])
@@ -58,8 +87,7 @@ if service=='LLama 2 Chatbot':
         st.session_state.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
     st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
-    # Function for generating LLaMA2 response
-    # Refactored from <https://github.com/a16z-infra/llama2-chatbot>
+
     def generate_llama2_response(prompt_input):
         string_dialogue = "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User'. You only respond once as 'Assistant'."
         for dict_message in st.session_state.messages:
@@ -72,13 +100,11 @@ if service=='LLama 2 Chatbot':
                                   "temperature":0.1, "top_p":0.9, "max_length":512, "repetition_penalty":1})
         return output
 
-    # User-provided prompt
     if prompt := st.chat_input(disabled=not replicate_api):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.write(prompt)
 
-    # Generate a new response if last message is not from assistant
     if st.session_state.messages[-1]["role"] != "assistant":
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
