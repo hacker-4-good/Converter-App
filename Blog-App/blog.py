@@ -3,8 +3,18 @@ import replicate
 import os 
 import requests
 from pexels_api import API 
+from random import randint
+check = True
+RANDOM_NUMBER = randint(0,5)
 
-
+quotes = [
+    ['Technology is best when it brings people together.', '~ Matt Mullengen, Social Media Entrepreneur'],
+    ['It has become appallingly obvious that our technology has exceeded our humanity.', '~ Albert Einstein, Physicist'],
+    ['It is only when they go wrong that machines remind you how powerful they are.', '~ Clive James, Broadcaster and Journalist'],
+    ['The Web as I envisaged it, we have not seen it yet. The future is still so much bigger than the past.','~ Tim Berners-Lee, Inventer of the World Wide Web'],
+    ['It is not a faith in technology but in people.', '~ Steve Jobs, Co-founder of Apple'],
+    ['The advance of technology is based on making it fit in so that you do not really even notice it, so it is part of everyday life.', '~ Bill Gates, Co-founder of Microsoft']
+]
 
 
 st.set_page_config(
@@ -22,6 +32,7 @@ st.sidebar.title("Everything Is Present Here 😎")
 
 
 if st.sidebar.button("About Me"):
+    check = False
     st.title("Hello 👋, I'm Mayank Goswami")
     st.header("About Me:")
     st.write(
@@ -46,7 +57,15 @@ service = st.sidebar.selectbox(label="Select the service you want to use :)", op
 
 
 
+if service=='Click it!' and check:
+    st.title(quotes[RANDOM_NUMBER][0])
+    st.write(quotes[RANDOM_NUMBER][1])
+
+
+
+
 if service=='Image Search':
+    check = False
     API_KEY = 't0Q0bzvEnqf60qO6FutoyISPobJtmtI5dlq20l4ovHlD8RshtsoKEZT4'
     api = API(PEXELS_API_KEY=API_KEY)
     st.title('Search your Image 🔎')
@@ -61,6 +80,7 @@ if service=='Image Search':
 
 
 if service=='Weather':
+    check = False
     API_KEY = 'd03df81fa6320b1f7fbb33c667d4e3c6'
 
 
@@ -105,6 +125,7 @@ if service=='Weather':
 
 
 if service=='Conversion Calculator':
+    check = False
     st.title('SGPA, CGPA and Percentage Converter')
 
     st.subheader('SGPA to CGPA and Percentage')
@@ -145,6 +166,7 @@ if service=='Conversion Calculator':
 
 
 if service=='Text2Image':
+    Check = False
     with st.sidebar:
         st.title('Text2Image 💬🖼️')
         replicate_api = st.text_input('Enter Replicate API token:', type='password')
@@ -176,6 +198,7 @@ if service=='Text2Image':
 
 
 if service=='LLama 2 Chatbot':
+    check = False
     with st.sidebar:
         st.title('🦙💬 Llama 2 Chatbot')
         replicate_api = st.text_input('Enter Replicate API token:', type='password')
@@ -227,3 +250,13 @@ if service=='LLama 2 Chatbot':
                 placeholder.markdown(full_response)
         message = {"role": "assistant", "content": full_response}
         st.session_state.messages.append(message)
+
+
+hide_st_style = '''
+    <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+    </style>
+'''
+st.markdown(hide_st_style, unsafe_allow_html=True)
