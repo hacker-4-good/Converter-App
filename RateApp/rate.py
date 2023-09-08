@@ -39,7 +39,7 @@ if st.button('Save') and count==0:
         count += 1
         narray = np.array(arr)
         df = pd.DataFrame(arr, columns=['Rate','Image'])
-        df.to_csv('Streamlit-Apps/blob/main/RateApp/rate.csv', mode='a', index=False, header=False)
+        df.to_csv('rate.csv', mode='a', index=False, header=False)
     else:
         st.error('Too early pressing')
 
