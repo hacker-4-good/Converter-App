@@ -4,7 +4,7 @@ import pandas as pd
 
 
 def model_api(age, cash, accuracy, altitude, location):
-    model = pk.load(open('Streamlit/BranchApp/model.pkl', 'rb'))
+    model = pk.load(open('BranchApp/model.pkl', 'rb'))
     custom = pd.DataFrame({'age':[int(age)], 'cash_incoming_30days':[float(cash)], 'accuracy':[float(accuracy)], 'altitude':[float(altitude)], 'location_provider':[int(location)]})
     prediction = model.predict(custom)
     if prediction==0:
