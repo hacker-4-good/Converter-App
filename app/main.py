@@ -3,7 +3,7 @@ import pymongo
 
 @st.cache_resource
 def init_connection():
-    return pymongo.MongoClient("mongodb://localhost:27017/")
+    return pymongo.MongoClient(**st.secrets["mongo"])
 
 client = init_connection()
 
