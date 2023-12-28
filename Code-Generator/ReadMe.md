@@ -8,5 +8,3 @@
   <li><code>pip install requirements.txt -r</code></li>
   <li><code>streamlit run code_generator.py</code></li>
 </ol>
-
-<h4>Deployed Application link :- https://code-generator.streamlit.app/</h4>
