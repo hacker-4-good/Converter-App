@@ -6,7 +6,7 @@ from langchain.chains import LLMChain, SequentialChain
 
 load_dotenv()
 
-llm = ChatOpenAI(model_name='gpt-3.5-turbo', api_key='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') # Insert your API KEY here to run the app
+llm = ChatOpenAI(model_name='gpt-3.5-turbo', api_key='API_KEY') # Insert your API KEY here to run the app
 
 code_prompt = PromptTemplate(
     input_variables = ["task", "language"],
