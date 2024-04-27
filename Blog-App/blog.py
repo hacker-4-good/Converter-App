@@ -180,7 +180,7 @@ if service=='Text2Image':
     text=st.text_area('', placeholder='Type something', height=150)
     if st.button("Generate"):
         frame = replicate.run(
-        "stability-ai/sdxl:a00d0b7dcbb9c3fbb34ba87d2d5b46c56969c84a628bf778a7fdaec30b1b99c5",
+        "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
         input={"prompt": text}
         )
         st.image(frame)
