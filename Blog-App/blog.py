@@ -18,7 +18,7 @@ quotes = [
 
 
 st.set_page_config(
-    page_title="Blog App",
+    page_title="Hacker 4 Good",
     page_icon="🧊",
     layout="wide",
     initial_sidebar_state="expanded",
