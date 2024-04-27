@@ -179,9 +179,10 @@ if service=='Text2Image':
     os.environ['REPLICATE_API_TOKEN'] = replicate_api
     text=st.text_area('', placeholder='Type something', height=150)
     if st.button("Generate"):
-        frame = replicate.run(
-        "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
-        input={"prompt": text}
+        api = replicate.Client(api_token = os.environ["REPLICATE_API_TOKEN"])
+        frame = api.run(
+            "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
+            input={"prompt": text}
         )
         st.image(frame)
         for image in frame:
