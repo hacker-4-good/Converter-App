@@ -39,7 +39,8 @@ if st.sidebar.button("About Me"):
         '''
         →   👦🏻 I am college student pursuing my bachelor's in Computer Science Engineering.\n
         →   👀 My interest is in the field of Data Science and Machine Learning.\n
-        →   💡 Currently working with the startup to build the solutions for modern agriculture.\n
+        →   💡 Working with the startup to build the solutions for modern agriculture.\n
+        →   💡 Currently working as Summer Intern (analyst) at EY \n
         →   🧑🏻‍💻 I also do competitive programming on various platform using Python and C++.\n
         →   😉 That's all about me now you can watch out for services present in this app.
         '''
