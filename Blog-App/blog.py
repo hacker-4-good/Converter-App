@@ -200,7 +200,7 @@ if service=='Text2Image':
 
 
 
-if service=='LLama 2 Chatbot':
+if service=='Gemini Chatbot':
     check = False
     st.title('💬 Gemini Chatbot')
 
