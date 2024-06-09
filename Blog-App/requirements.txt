@@ -2,3 +2,8 @@ streamlit==1.25.0
 replicate
 requests
 pexels_api
+langchain 
+langchain_community
+langchain_core 
+google_generativeai
+langchain_google_genai
