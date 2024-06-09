@@ -4,6 +4,7 @@ import os
 import requests
 from pexels_api import API 
 from random import randint
+from langchain_google_genai import GoogleGenerativeAI
 check = True
 RANDOM_NUMBER = randint(0,5)
 
@@ -53,7 +54,7 @@ if st.sidebar.button("About Me"):
 
 
 
-service = st.sidebar.selectbox(label="Select the service you want to use :)", options=['Click it!','LLama 2 Chatbot', 'Text2Image', 'Conversion Calculator', 'Weather', 'Image Search'])
+service = st.sidebar.selectbox(label="Select the service you want to use :)", options=['Click it!','Gemini Chatbot', 'Text2Image', 'Conversion Calculator', 'Weather', 'Image Search'])
 
 
 
@@ -201,16 +202,9 @@ if service=='Text2Image':
 
 if service=='LLama 2 Chatbot':
     check = False
-    with st.sidebar:
-        st.title('🦙💬 Llama 2 Chatbot')
-        replicate_api = st.text_input('Enter Replicate API token:', type='password')
-        if not (replicate_api.startswith('r8_') and len(replicate_api)==40):
-            st.warning('Please enter your credentials!', icon='⚠️')
-        else:
-            st.success('Proceed to entering your prompt message!', icon='👉')
-        st.markdown("You can make your API Token key from here → [Link](https://replicate.com/)")
+    st.title('💬 Gemini Chatbot')
 
-    os.environ['REPLICATE_API_TOKEN'] = replicate_api
+    os.environ['GOOGLE_API_KEY'] = 'AIzaSyC0PWd2WEfCYHYCR4XYgEkCtOPGF3sgwDk'
     if "messages" not in st.session_state.keys():
         st.session_state.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
 
@@ -230,12 +224,11 @@ if service=='LLama 2 Chatbot':
                 string_dialogue += "User: " + dict_message["content"] + "\\n\\n"
             else:
                 string_dialogue += "Assistant: " + dict_message["content"] + "\\n\\n"
-        output = replicate.run('a16z-infra/llama13b-v2-chat:df7690f1994d94e96ad9d568eac121aecf50684a0b0963b25a41cc40061269e5', 
-                           input={"prompt": f"{string_dialogue} {prompt_input} Assistant: ",
-                                  "temperature":0.1, "top_p":0.9, "max_length":512, "repetition_penalty":1})
+        llm = GoogleGenerativeAI(model='gemini-1.5-flash-latest')
+        output = llm(prompt = prompt_input)
         return output
 
-    if prompt := st.chat_input(disabled=not replicate_api):
+    if prompt := st.chat_input():
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.write(prompt)
