@@ -31,8 +31,9 @@ st.set_page_config(
 
 st.sidebar.title("Everything Is Present Here 😎")
 
+service = st.sidebar.selectbox(label="Select the service you want to use :)", options=['Click it!','Gemini Chatbot', 'Text2Image', 'Conversion Calculator', 'Weather', 'Image Search'])
 
-if st.sidebar.button("About Me"):
+if st.sidebar.button("About Me") and (service==None or service=='Click it!'):
     check = False
     st.title("Hello 👋, I'm Mayank Goswami")
     st.header("About Me:")
@@ -54,7 +55,8 @@ if st.sidebar.button("About Me"):
 
 
 
-service = st.sidebar.selectbox(label="Select the service you want to use :)", options=['Click it!','Gemini Chatbot', 'Text2Image', 'Conversion Calculator', 'Weather', 'Image Search'])
+
+
 
 
 
