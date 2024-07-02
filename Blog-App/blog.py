@@ -206,7 +206,7 @@ if service=='Gemini Chatbot':
     check = False
     st.title('💬 Gemini Chatbot')
 
-    os.environ['GOOGLE_API_KEY'] = 'AIzaSyC0PWd2WEfCYHYCR4XYgEkCtOPGF3sgwDk'
+    os.environ['GOOGLE_API_KEY'] = 'AIzaSyDjRNjx7bRhN6HTQC5Go2DKRObgqmAkNds'
     if "messages" not in st.session_state.keys():
         st.session_state.messages = [{"role": "assistant", "content": "How may I assist you today?"}]
 
