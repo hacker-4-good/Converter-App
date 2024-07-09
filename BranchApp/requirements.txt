@@ -1,3 +1,4 @@
 streamlit
 dspy-ai
 pypdf2
+google_generativeai
