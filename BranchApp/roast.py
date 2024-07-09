@@ -1,10 +1,8 @@
 import streamlit as st 
 import dspy 
 import PyPDF2
-from dotenv import load_dotenv
-load_dotenv()
 
-llm = dspy.Google(model = 'gemini-1.5-flash-latest')
+llm = dspy.Google(model = 'gemini-1.5-flash-latest', api_key='AIzaSyDjRNjx7bRhN6HTQC5Go2DKRObgqmAkNds')
 
 dspy.settings.configure(lm = llm)
 
