@@ -1,6 +1,8 @@
 import streamlit as st 
 import dspy 
 import PyPDF2
+import os 
+os.environ["GOOGLE_API_KEY"] = 'AIzaSyDjRNjx7bRhN6HTQC5Go2DKRObgqmAkNds'
 
 llm = dspy.Google(model = 'gemini-1.5-flash-latest', api_key='AIzaSyDjRNjx7bRhN6HTQC5Go2DKRObgqmAkNds')
 
