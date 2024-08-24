@@ -7,4 +7,4 @@ langchain_community
 langchain_core 
 google_generativeai
 langchain_google_genai
-pillow
+Pillow
